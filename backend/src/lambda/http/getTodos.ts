@@ -11,7 +11,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     
     console.log("EVENT:", event);
 
-    const authHeader = event.headers.authorizationToken
+    const authHeader = event.headers.Authorization
     const authSplit = authHeader.split(" ")
     const userId = parseUserId(authSplit[1])
     
