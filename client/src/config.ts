@@ -1,7 +1,7 @@
 // TODO: Once your application is deployed, copy an API id here so that the frontend could interact with it
-const apiId = 'ng3bxx0ria'
-export const apiEndpoint = `https://${apiId}.execute-api.us-east-1.amazonaws.com/dev`
-
+const apiId = 'l9mb2ea2v0'
+export const apiEndpoint = `https://${apiId}.execute-api.us-east-2.amazonaws.com/dev`
+//https://gv2g6h7cjh.execute-api.us-east-2.amazonaws.com/dev
 export const authConfig = {
   // TODO: Create an Auth0 application and copy values from it into this map
   domain: 'udagramsam.us.auth0.com',            // Auth0 domain

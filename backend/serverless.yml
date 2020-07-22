@@ -1,5 +1,5 @@
 service:
-  name: serverless-project-2020
+  name: serverless-app-sam
 
 plugins:
   - serverless-webpack
@@ -16,9 +16,9 @@ provider:
 
 
   environment:
-    TODOS_TABLE: samrudhi-${self:provider.stage}
-    AUTH_0_SECRET: 9BE3ACCCBC1BA32200A10090E75FA797004CB93E
-    S3_BUCKET: samrudhi-${self:provider.stage}
+    TODOS_TABLE: serverless-sam-${self:provider.stage}
+    AUTH_0_SECRET: vkgDTXN8UvjGrti44f1TzSbmct1C8oeuQRBbLh5BPElnLuJxxMV8VoPmKTQ9jBRz
+    S3_BUCKET: serverless-sam-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
 
 functions:
@@ -165,3 +165,4 @@ resources:
               Action: 's3:GetObject'
               Resource: 'arn:aws:s3:::${self:provider.environment.S3_BUCKET}/*'
         Bucket: !Ref AttachmentBucket
+    
