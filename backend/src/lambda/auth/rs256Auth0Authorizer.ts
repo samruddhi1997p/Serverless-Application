@@ -3,7 +3,7 @@ import { CustomAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda'
 import 'source-map-support/register'
 
 import { verify } from 'jsonwebtoken'
-import { JwtToken } from '../../auth/JwtToken'
+import { JwtToken } from '../../auth/JwtPayload'
 
 const cert = `-----BEGIN CERTIFICATE-----
 MIIDCTCCAfGgAwIBAgIJKGwERAGRmTYMMA0GCSqGSIb3DQEBCwUAMCIxIDAeBgNV
