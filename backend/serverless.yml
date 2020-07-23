@@ -21,7 +21,7 @@ provider:
 
 
   environment:
-    TODOS_TABLE: serverless-sam-${self:provider.stage}
+    TODOS_TABLE: serverless-samrudhi-${self:provider.stage}
     AUTH_0_SECRET: vkgDTXN8UvjGrti44f1TzSbmct1C8oeuQRBbLh5BPElnLuJxxMV8VoPmKTQ9jBRz
     S3_BUCKET: serverless-sam-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
@@ -78,7 +78,7 @@ functions:
           method: post
           path: todos
           cors: true
-          reqValidatorName: RequestBodyValidator
+          reqValidatorName: 
           documentation:
             summary: Create a new todo
             description: Create a new todo
@@ -106,7 +106,7 @@ functions:
           method: patch
           path: todos/{todoId}
           cors: true
-          reqValidatorName: RequestBodyValidator
+          reqValidatorName: 
           documentation:
             summary: update a  todo
             description: update a  todo
@@ -196,7 +196,6 @@ resources:
               KeyType: HASH
             Projection:
               ProjectionType: ALL
-        BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.TODOS_TABLE}
       
     AttachmentBucket:
