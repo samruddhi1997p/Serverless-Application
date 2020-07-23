@@ -4,6 +4,8 @@ service:
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
+  - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
 
 provider:
   name: aws
@@ -12,7 +14,10 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-2'}
 
-    # enable AWS X-Ray Tracing
+  # enable AWS X-Ray Tracing
+  tracing:
+    lambda: true
+    apiGateway: true
 
 
   environment:
@@ -20,6 +25,21 @@ provider:
     AUTH_0_SECRET: vkgDTXN8UvjGrti44f1TzSbmct1C8oeuQRBbLh5BPElnLuJxxMV8VoPmKTQ9jBRz
     S3_BUCKET: serverless-sam-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
+
+custom:
+  documentation:
+    api:
+      info:
+        version: v1.0.0
+        title: Gaurav Todos API
+        description: Serverless application for todos list 
+    models:
+      - name: CreateTodoRequest
+        contentType: application/json
+        schema: ${file(src/models/create-todo-request.json)}
+      - name: UpdateTodoRequest
+        contentType: application/json
+        schema: ${file(src/models/update-todo-request.json)}
 
 functions:
   Auth:
@@ -43,6 +63,12 @@ functions:
       Action:
         - dynamodb:Query
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/UserIdIndex
+    - Effect: 'Allow'          # Tracing permissions!  
+      Action:
+        - 'xray:PutTraceSegments'    
+        - 'xray:PutTelemetryRecords'
+      Resource:
+        - '*'
 
   # TODO: Configure this function
   CreateTodo:
@@ -58,7 +84,12 @@ functions:
       Action:
         - dynamodb:PutItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-
+    - Effect: 'Allow'          # Tracing permissions!  
+      Action:
+        - 'xray:PutTraceSegments'    
+        - 'xray:PutTelemetryRecords'
+      Resource:
+        - '*'
   # TODO: Configure this function
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
@@ -73,6 +104,12 @@ functions:
       Action:
         - dynamodb:UpdateItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+    - Effect: 'Allow'          # Tracing permissions!  
+      Action:
+        - 'xray:PutTraceSegments'    
+        - 'xray:PutTelemetryRecords'
+      Resource:
+        - '*'
 
   # TODO: Configure this function
   DeleteTodo:
@@ -88,8 +125,14 @@ functions:
       Action:
         - dynamodb:DeleteItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-
-  # TODO: Configure this function
+    - Effect: 'Allow'          # Tracing permissions!  
+      Action:
+        - 'xray:PutTraceSegments'    
+        - 'xray:PutTelemetryRecords'
+      Resource:
+        - '*'
+  
+    # TODO: Configure this function
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
     events:
@@ -108,6 +151,12 @@ functions:
       - s3:PutObject
       - s3:GetObject
       Resource: arn:aws:s3:::${self:provider.environment.S3_BUCKET}/*
+    - Effect: 'Allow'          # Tracing permissions!  
+      Action:
+        - 'xray:PutTraceSegments'    
+        - 'xray:PutTelemetryRecords'
+      Resource:
+        - '*'
 
 resources:
   Resources:
