@@ -31,7 +31,7 @@ custom:
     api:
       info:
         version: v1.0.0
-        title: Gaurav Todos API
+        title:  Todos API
         description: Serverless application for todos list 
     models:
       - name: CreateTodoRequest
@@ -78,6 +78,12 @@ functions:
           method: post
           path: todos
           cors: true
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Create a new todo
+            description: Create a new todo
+            requestModels:
+              'application/json': CreateTodoRequest
     iamRoleStatementsName: ${self:service.name}-create-todo-role-${self:provider.stage}
     iamRoleStatements:
     - Effect: Allow
@@ -90,6 +96,8 @@ functions:
         - 'xray:PutTelemetryRecords'
       Resource:
         - '*'
+
+        
   # TODO: Configure this function
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
@@ -98,6 +106,12 @@ functions:
           method: patch
           path: todos/{todoId}
           cors: true
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: update a  todo
+            description: update a  todo
+            requestModels:
+              'application/json': UpdateTodoRequest
     iamRoleStatementsName: ${self:service.name}-update-todo-role-${self:provider.stage}
     iamRoleStatements:
     - Effect: Allow
